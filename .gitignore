@@ -1,6 +1,31 @@
-#Server & Client
+#Server
 .idea
 node_modules/
 dist
 npm-debug.log*
 .DS_Store
+
+#Client
+# dependencies
+client/node_modules
+client/.pnp
+client/.pnp.js
+
+# testing
+client/coverage
+
+# production
+client/build
+
+# misc
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+#git rm -r --cached .
