@@ -21,8 +21,9 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import TaskList from "./taskList";
+import Tasks from "./tasks";
 import Lists from "./lists";
+import Tags from "./tags";
 
 const drawerWidth = 240;
 
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function MainView({tasks, tags, lists}) {
+export default function MainView({tasks, tags, lists, query}) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
@@ -99,6 +100,11 @@ export default function MainView({tasks, tags, lists}) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    let title = "TO DO LIST";
+    const listNames = query ? lists.filter(list => list._id === query.id) : [];
+    if(listNames.length > 0) title = listNames[0].name;
+
 
     return (
         <div className={classes.root}>
@@ -120,7 +126,7 @@ export default function MainView({tasks, tags, lists}) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        TO DO LIST
+                        {title}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -146,30 +152,21 @@ export default function MainView({tasks, tags, lists}) {
                 <List
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
-                            <h3 className={classes.listSubheader}>Lists</h3>
+                            <h3 className={classes.listSubheader}>Tags</h3>
                         </ListSubheader>
                     }
                 >
-                    <Lists lists={lists}/>
+                   <Tags tags={tags} />
                 </List>
                 <Divider />
                 <List
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
-                            <h3 className={classes.listSubheader}>Tags</h3>
+                            <h3 className={classes.listSubheader}>Lists</h3>
                         </ListSubheader>
                     }
                 >
-                    {tags && tags.map(tag => (
-                        <ListItem key={tag._id} button>
-                            <ListItemIcon><FiberManualRecordIcon style={{color: tag.color}} /></ListItemIcon>
-                            <ListItemText primary={tag.text} />
-                        </ListItem>
-                    ))}
-                    <ListItem button>
-                        <ListItemIcon><AddIcon/></ListItemIcon>
-                        <ListItemText primary={"Add"} />
-                    </ListItem>
+                    <Lists lists={lists}/>
                 </List>
             </Drawer>
             <main
@@ -178,7 +175,7 @@ export default function MainView({tasks, tags, lists}) {
                 })}
             >
                 <div className={classes.drawerHeader} />
-               <TaskList tasks={tasks} />
+               <Tasks tasks={tasks} />
 
             </main>
         </div>

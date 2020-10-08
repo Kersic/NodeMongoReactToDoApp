@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const TaskList = ({tasks}) => {
+const Tasks = ({tasks}) => {
     const classes = useStyles();
     return (
         <List className={classes.todoList} component="nav" aria-label="main mailbox folders">
@@ -37,4 +37,4 @@ const TaskList = ({tasks}) => {
     )
 }
 
-export default TaskList;
+export default Tasks;
