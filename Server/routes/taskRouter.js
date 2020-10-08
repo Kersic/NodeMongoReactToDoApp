@@ -14,6 +14,20 @@ router.get('/', (req, res) => {
         })
 });
 
+router.get('/:listId', (req, res) => {
+    console.log('GET: task/:listId');
+    console.log(req.params);
+    TaskRouter.find({list: req.params.listId})
+        .populate('tag')
+        .populate('list')
+        .then(data => {res.json(data)})
+        .catch(err => {
+            console.log(err);
+            res.json(err);
+        })
+});
+
+
 router.post('/', (req, res) => {
     console.log(req.body);
     console.log('POST: task/');
