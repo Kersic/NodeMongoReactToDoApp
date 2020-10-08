@@ -19,6 +19,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import TaskList from "./taskList";
+import Lists from "./lists";
 
 const drawerWidth = 240;
 
@@ -57,9 +61,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
     },
     content: {
         flexGrow: 1,
@@ -79,10 +82,12 @@ const useStyles = makeStyles((theme) => ({
     },
     listSubheader: {
         marginBottom: "0px",
-    }
+    },
 }));
 
-export default function MainView() {
+
+
+export default function MainView({tasks, tags, lists}) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
@@ -129,6 +134,10 @@ export default function MainView() {
                 }}
             >
                 <div className={classes.drawerHeader}>
+                    <div/>
+                    <Typography variant="h6" noWrap>
+                        TO DO LIST
+                    </Typography>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
@@ -141,42 +150,25 @@ export default function MainView() {
                         </ListSubheader>
                     }
                 >
-                    <ListItem button>
-                        <ListItemIcon><FiberManualRecordOutlinedIcon fontSize="small"/></ListItemIcon>
-                        <ListItemText primary={"All"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon><FiberManualRecordOutlinedIcon fontSize="small"/></ListItemIcon>
-                        <ListItemText primary={"Personal"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon><FiberManualRecordOutlinedIcon fontSize="small"/></ListItemIcon>
-                        <ListItemText primary={"School"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon><AddIcon/></ListItemIcon>
-                        <ListItemText primary={"Dodaj"} />
-                    </ListItem>
+                    <Lists lists={lists}/>
                 </List>
                 <Divider />
                 <List
                     subheader={
                         <ListSubheader component="div" id="nested-list-subheader">
-                            <h3 className={classes.listSubheader}>Lists</h3>
+                            <h3 className={classes.listSubheader}>Tags</h3>
                         </ListSubheader>
                     }
                 >
-                    <ListItem button>
-                        <ListItemIcon><FiberManualRecordIcon fontSize="small"/></ListItemIcon>
-                        <ListItemText primary={"Important"} />
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon><FiberManualRecordIcon fontSize="small"/></ListItemIcon>
-                        <ListItemText primary={"Work"} />
-                    </ListItem>
+                    {tags && tags.map(tag => (
+                        <ListItem key={tag._id} button>
+                            <ListItemIcon><FiberManualRecordIcon style={{color: tag.color}} /></ListItemIcon>
+                            <ListItemText primary={tag.text} />
+                        </ListItem>
+                    ))}
                     <ListItem button>
                         <ListItemIcon><AddIcon/></ListItemIcon>
-                        <ListItemText primary={"Dodaj"} />
+                        <ListItemText primary={"Add"} />
                     </ListItem>
                 </List>
             </Drawer>
@@ -186,7 +178,8 @@ export default function MainView() {
                 })}
             >
                 <div className={classes.drawerHeader} />
-                <p>lsit</p>
+               <TaskList tasks={tasks} />
+
             </main>
         </div>
     );

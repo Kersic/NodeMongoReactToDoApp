@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@material-ui/icons": "^4.9.1",
+    "clsx": "^1.1.1",
     "prop-types": "^15.7.2"
   }
 }

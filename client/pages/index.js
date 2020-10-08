@@ -1,21 +1,16 @@
 import React from "react";
-import axios from 'axios';
-import MainView from "./mainView";
 
-const Index = ({tasks}) => {
-    console.log(tasks);
+const Index = () => {
     return (
-
-            <MainView />
-          
-
+        <p>Index</p>
     )
 }
 
-Index.getInitialProps = async () => {
-    const res = await axios.get("http://localhost:3001/task");
-    const {data} = res;
-    return { tasks: data }
-}
+Index.getInitialProps = (ctx) => {
+    if (ctx.req) {
+        ctx.res.writeHead(302, { Location: "/list" });
+        ctx.res.end();
+    }
+};
 
 export default Index;
