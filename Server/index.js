@@ -1,11 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser')
+const cors = require('cors');
 const taskRoute = require('./routes/taskRouter');
 const tagRoute = require('./routes/tagRouter');
 const listRoute = require('./routes/listRouter');
-const bodyParser = require('body-parser')
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 const port = 3001;
 
 app.get('/', (req, res) => {
