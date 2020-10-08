@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -7,11 +7,13 @@ import AddIcon from "@material-ui/icons/Add";
 import EditIcon from '@material-ui/icons/Edit';
 import {makeStyles} from "@material-ui/core/styles";
 import theme from "../src/theme";
-import {Modal} from "@material-ui/core";
 import ModalButton from "./modalButton";
+import TagForm from "./tagForm";
+import axios from "axios";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
-    editButton: {
+    iconButton: {
         cursor: "pointer",
         "&:hover": {
             color: "#a1a1a1",
@@ -24,6 +26,36 @@ const useStyles = makeStyles((theme) => ({
 
 const Tags = ({tags}) => {
     const classes = useStyles(theme);
+    const [name, setName] = useState("");
+    const [color, setColor] = useState("");
+
+    const postTag = async () => {
+        await axios({
+            method: 'post',
+            url: process.env.SERVER_URL + "tag",
+            data: {
+                text: name,
+                color: color
+            }
+        });
+    }
+
+    const updateTag = async (id) => {
+        await axios({
+            method: 'put',
+            url: process.env.SERVER_URL + `tag/${id}`,
+            data: {
+                text: name,
+                color: color
+            }
+        });
+    }
+    const deleteTag = async (id) => {
+        await axios({
+            method: 'delete',
+            url: process.env.SERVER_URL + `tag/${id}`,
+        });
+    }
 
     return (
         <>
@@ -34,9 +66,11 @@ const Tags = ({tags}) => {
                     <ListItemIcon>
                         <ModalButton
                             title={"Edit tag"}
-                            button={<EditIcon className={classes.editButton}/>}
-                            content={<p>Edit tag</p>}
+                            button={<EditIcon className={classes.iconButton}/>}
+                            content={<TagForm tag={tag} name={name} color={color} setName={setName} setColor={setColor} />}
+                            confirmAction={() => updateTag(tag._id)}
                         />
+                        <DeleteIcon className={classes.iconButton} onClick={() => deleteTag(tag._id)}/>
                     </ListItemIcon>
                 </ListItem>
             ))}
@@ -49,16 +83,9 @@ const Tags = ({tags}) => {
                     </ListItem>
                 }
                 content={
-                    <div>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-                        <p>test</p>
-
-                    </div>
+                    <TagForm name={name} color={color} setName={setName} setColor={setColor} />
                 }
+                confirmAction={postTag}
             />
         </>
     )
