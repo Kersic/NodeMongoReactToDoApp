@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,6 +16,8 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Tasks from "./tasks";
 import Lists from "./lists";
 import Tags from "./tags";
+import {ListsContext} from "../contexts/listsProvider";
+import {TagsContext} from "../contexts/tagsProvider";
 
 const drawerWidth = 240;
 
@@ -80,10 +82,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function MainView({tasks, tags, lists, query}) {
+export default function MainView({tasks, query}) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
+    const { lists } = useContext(ListsContext);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -148,7 +151,7 @@ export default function MainView({tasks, tags, lists, query}) {
                         </ListSubheader>
                     }
                 >
-                   <Tags tags={tags} />
+                   <Tags />
                 </List>
                 <Divider />
                 <List
@@ -158,7 +161,7 @@ export default function MainView({tasks, tags, lists, query}) {
                         </ListSubheader>
                     }
                 >
-                    <Lists lists={lists}/>
+                    <Lists/>
                 </List>
             </Drawer>
             <main

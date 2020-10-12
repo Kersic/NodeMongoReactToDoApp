@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ModalButton({button, content, title, confirmAction}) {
+export default function ModalButton({button, content, title, confirmAction, disableConfirm}) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
@@ -69,7 +69,7 @@ export default function ModalButton({button, content, title, confirmAction}) {
                         {title}
                     </Typography>
                     {content}
-                    <Button variant="contained" color="default" className={classes.modalButton} onClick={handleSuccess}>
+                    <Button variant="contained" color="default" className={classes.modalButton} onClick={handleSuccess} disabled={disableConfirm}>
                         Confirm
                     </Button>
                     <Button variant="contained" color="primary" className={classes.modalButton} onClick={handleClose}>

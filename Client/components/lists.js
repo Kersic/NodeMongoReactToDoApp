@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import FiberManualRecordOutlinedIcon from "@material-ui/icons/FiberManualRecordOutlined";
@@ -6,8 +6,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import AddIcon from "@material-ui/icons/Add";
 import Link from "next/link";
+import {ListsContext} from "../contexts/listsProvider";
 
-const Lists = ({lists}) => {
+const Lists = () => {
+    const { lists } = useContext(ListsContext);
     return (
         <>
             <Link href={`list?id=`}>

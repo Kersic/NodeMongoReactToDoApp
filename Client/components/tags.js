@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -9,8 +9,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import theme from "../src/theme";
 import ModalButton from "./modalButton";
 import TagForm from "./tagForm";
-import axios from "axios";
 import DeleteIcon from '@material-ui/icons/Delete';
+import {colorRegex} from "../helpers";
+import {TagsContext} from "../contexts/tagsProvider";
 
 const useStyles = makeStyles(() => ({
     iconButton: {
@@ -24,38 +25,11 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const Tags = ({tags}) => {
+const Tags = () => {
     const classes = useStyles(theme);
     const [name, setName] = useState("");
     const [color, setColor] = useState("");
-
-    const postTag = () => {
-        axios({
-            method: 'post',
-            url: process.env.SERVER_URL + "tag",
-            data: {
-                text: name,
-                color: color
-            }
-        }).catch(err => console.log(err));
-    }
-
-    const updateTag = (id) => {
-        axios({
-            method: 'put',
-            url: process.env.SERVER_URL + `tag/${id}`,
-            data: {
-                text: name,
-                color: color
-            }
-        }).catch(err => console.log(err));
-    }
-    const deleteTag = (id) => {
-        axios({
-            method: 'delete',
-            url: process.env.SERVER_URL + `tag/${id}`,
-        }).catch(err => console.log(err));
-    }
+    const {tags, postTag, updateTag, deleteTag } = useContext(TagsContext);
 
     return (
         <>
@@ -68,7 +42,7 @@ const Tags = ({tags}) => {
                             title={"Edit tag"}
                             button={<EditIcon className={classes.iconButton}/>}
                             content={<TagForm tag={tag} name={name} color={color} setName={setName} setColor={setColor} />}
-                            confirmAction={() => updateTag(tag._id)}
+                            confirmAction={() => updateTag(tag._id, name, color)}
                         />
                         <DeleteIcon className={classes.iconButton} onClick={() => deleteTag(tag._id)}/>
                     </ListItemIcon>
@@ -85,7 +59,8 @@ const Tags = ({tags}) => {
                 content={
                     <TagForm name={name} color={color} setName={setName} setColor={setColor} />
                 }
-                confirmAction={postTag}
+                confirmAction={() => postTag(name, color)}
+                disableConfirm={!name || !colorRegex.test(color)}
             />
         </>
     )
