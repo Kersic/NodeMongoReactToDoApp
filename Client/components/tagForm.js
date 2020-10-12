@@ -18,16 +18,16 @@ const tagForm = ({tag, name, color, setName, setColor}) => {
 
     return (
         <div>
-            <TextField id="standard-required" label="Name"
+            <TextField label="Name"
                        color="secondary"
-                       defaultValue={name}
+                       value={name}
                        className={classes.textInput}
                        onChange={e => setName(e.target.value)}
             />
             <br/>
-            <TextField id="standard-required" label="Color"
+            <TextField label="Color"
                        color="secondary"
-                       defaultValue={color}
+                       value={color}
                        className={classes.textInput}
                        onChange={e => setColor(e.target.value)}
             />
