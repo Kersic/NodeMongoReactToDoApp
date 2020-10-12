@@ -1,8 +1,9 @@
 import React, {useEffect} from "react";
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from "@material-ui/core/styles";
+import { GithubPicker } from "react-color";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     textInput: {
         marginBottom: "15px"
     },
@@ -30,6 +31,11 @@ const tagForm = ({tag, name, color, setName, setColor}) => {
                        value={color}
                        className={classes.textInput}
                        onChange={e => setColor(e.target.value)}
+            />
+            <br/>
+            <GithubPicker
+                color={color}
+                onChangeComplete={newColor => setColor(newColor.hex)}
             />
         </div>
     )
