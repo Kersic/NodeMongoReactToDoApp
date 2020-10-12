@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
         .then(data => {res.json(data)})
         .catch(err => {
             console.log(err);
-            res.json(err);
+            res.status(500).json(err);
         })
 });
 
@@ -23,7 +23,7 @@ router.get('/:listId', (req, res) => {
         .then(data => {res.json(data)})
         .catch(err => {
             console.log(err);
-            res.json(err);
+            res.status(500).json(err);
         })
 });
 
@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
         .then(data => {res.json(data)})
         .catch(err => {
             console.log(err);
-            res.json(err);
+            res.status(500).json(err);
         });
 });
 
@@ -56,7 +56,7 @@ router.delete('/:id', (req, res) => {
         })
         .catch(err => {
             console.log(err);
-            res.json(err);
+            res.status(500).json(err);
         });
 });
 
@@ -72,19 +72,19 @@ router.put('/:id', (req, res) => {
                 tag: req.body.tag,
                 list: req.body.list,
             }})
-        .then(data => {
+        .then(() => {
             TaskRouter.findOne({_id: req.params.id})
                 .then(data => {
                     res.json(data);
                 })
                 .catch(err => {
                     console.log(err);
-                    res.json(err);
+                    res.status(500).json(err);
                 });
         })
         .catch(err => {
             console.log(err);
-            res.json(err);
+            res.status(500).json(err);
         });
 });
 
