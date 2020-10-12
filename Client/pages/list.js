@@ -9,13 +9,18 @@ const List = ({tasks, tags, lists, query}) => {
 }
 
 List.getInitialProps = async ({query}) => {
-    let res = query.id ? await axios.get(process.env.SERVER_URL + `task/${query.id}`) : await axios.get(process.env.SERVER_URL + "task");
-    const tasks = res.data;
-    res = await axios.get(process.env.SERVER_URL + "tag");
-    const tags = res.data;
-    res = await axios.get(process.env.SERVER_URL + "list");
-    const lists = res.data;
-    return { tasks: tasks, tags: tags, lists: lists, query: query }
+    try {
+        let res = query.id ? await axios.get(process.env.SERVER_URL + `task/${query.id}`) : await axios.get(process.env.SERVER_URL + "task");
+        const tasks = res.data;
+        res = await axios.get(process.env.SERVER_URL + "tag");
+        const tags = res.data;
+        res = await axios.get(process.env.SERVER_URL + "list");
+        const lists = res.data;
+        return {tasks: tasks, tags: tags, lists: lists, query: query}
+    } catch (e) {
+        console.log(e);
+        return {tasks: [], tags: [], lists: [], query: query}
+    }
 }
 
 export default List;

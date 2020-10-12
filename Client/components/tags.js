@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -12,7 +12,7 @@ import TagForm from "./tagForm";
 import axios from "axios";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     iconButton: {
         cursor: "pointer",
         "&:hover": {
@@ -29,32 +29,32 @@ const Tags = ({tags}) => {
     const [name, setName] = useState("");
     const [color, setColor] = useState("");
 
-    const postTag = async () => {
-        await axios({
+    const postTag = () => {
+        axios({
             method: 'post',
             url: process.env.SERVER_URL + "tag",
             data: {
                 text: name,
                 color: color
             }
-        });
+        }).catch(err => console.log(err));
     }
 
-    const updateTag = async (id) => {
-        await axios({
+    const updateTag = (id) => {
+        axios({
             method: 'put',
             url: process.env.SERVER_URL + `tag/${id}`,
             data: {
                 text: name,
                 color: color
             }
-        });
+        }).catch(err => console.log(err));
     }
-    const deleteTag = async (id) => {
-        await axios({
+    const deleteTag = (id) => {
+        axios({
             method: 'delete',
             url: process.env.SERVER_URL + `tag/${id}`,
-        });
+        }).catch(err => console.log(err));
     }
 
     return (
