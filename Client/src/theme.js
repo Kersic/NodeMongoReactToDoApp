@@ -19,4 +19,16 @@ const theme = createMuiTheme({
     },
 });
 
+export const listIconsStyle = {
+    iconButton: {
+        cursor: "pointer",
+        "&:hover": {
+            color: "#a1a1a1",
+        }
+    },
+    listItem: {
+        cursor: "default",
+    }
+}
+
 export default theme;

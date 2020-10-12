@@ -7,6 +7,9 @@ const useStyles = makeStyles(() => ({
     textInput: {
         marginBottom: "15px"
     },
+    colorPicker: {
+        minWidth: "220px"
+    },
 }));
 
 const tagForm = ({tag, name, color, setName, setColor}) => {
@@ -36,6 +39,7 @@ const tagForm = ({tag, name, color, setName, setColor}) => {
             <GithubPicker
                 color={color}
                 onChangeComplete={newColor => setColor(newColor.hex)}
+                className={classes.colorPicker}
             />
         </div>
     )

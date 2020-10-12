@@ -1,5 +1,19 @@
 import axios from "axios";
 
+export const httpGet = (url, setIsLoading, callback) => {
+    setIsLoading(true);
+    axios({
+        method: 'get',
+        url: url,
+    }).then(res =>{
+        setIsLoading(false);
+        callback(res.data);
+    }).catch(err => {
+        setIsLoading(false);
+        console.log(err)
+    });
+}
+
 export const httpPost = (url, data, setIsLoading, callback) => {
     setIsLoading(true);
     axios({

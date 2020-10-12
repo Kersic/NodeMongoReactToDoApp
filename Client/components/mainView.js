@@ -146,7 +146,7 @@ export default function MainView({tasks, query}) {
                 <Divider />
                 <List
                     subheader={
-                        <ListSubheader component="div" id="nested-list-subheader">
+                        <ListSubheader component="div">
                             <h3 className={classes.listSubheader}>Tags</h3>
                         </ListSubheader>
                     }
@@ -156,7 +156,7 @@ export default function MainView({tasks, query}) {
                 <Divider />
                 <List
                     subheader={
-                        <ListSubheader component="div" id="nested-list-subheader">
+                        <ListSubheader component="div">
                             <h3 className={classes.listSubheader}>Lists</h3>
                         </ListSubheader>
                     }

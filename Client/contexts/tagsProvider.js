@@ -1,7 +1,7 @@
 import React, {createContext, useEffect, useState} from "react";
-import axios from "axios";
-import {httpDelete, httpPost, httpPut} from "../fetcher";
+import {httpDelete, httpGet, httpPost, httpPut} from "../fetcher";
 import Loader from "../components/Loader";
+
 export const TagsContext = createContext([]);
 
 export function TagsProvider({ children, initialTags }) {
@@ -13,8 +13,10 @@ export function TagsProvider({ children, initialTags }) {
     }, []);
 
     const fetchTags = async () => {
-        const res = await axios.get(process.env.SERVER_URL + "tag");
-        setTags(res.data);
+        httpGet(process.env.SERVER_URL + "tag", setIsLoading, data => {
+            setTags(data);
+        });
+
     }
 
     const postTag = (name, color) => {

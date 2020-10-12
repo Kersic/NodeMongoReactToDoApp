@@ -6,46 +6,44 @@ import ListItemText from "@material-ui/core/ListItemText";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from '@material-ui/icons/Edit';
 import {makeStyles} from "@material-ui/core/styles";
-import theme from "../src/theme";
 import ModalButton from "./modalButton";
 import TagForm from "./tagForm";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {colorRegex} from "../helpers";
 import {TagsContext} from "../contexts/tagsProvider";
+import {listIconsStyle} from "../src/theme";
 
 const useStyles = makeStyles(() => ({
-    iconButton: {
-        cursor: "pointer",
-        "&:hover": {
-            color: "#a1a1a1",
-        }
-    },
-    listItem: {
-        cursor: "default",
-    }
+    ...listIconsStyle,
 }));
 
 const Tags = () => {
-    const classes = useStyles(theme);
+    const classes = useStyles();
     const [name, setName] = useState("");
     const [color, setColor] = useState("");
+    const [hoverId, setHoveredId] = useState("");
     const {tags, postTag, updateTag, deleteTag } = useContext(TagsContext);
 
     return (
         <>
             {tags && tags.map(tag => (
-                <ListItem className={classes.listItem} key={tag._id} >
+                <ListItem className={classes.listItem}
+                          key={tag._id}
+                          onMouseLeave={() => setHoveredId("")}
+                          onMouseEnter={()=> setHoveredId(tag._id)}
+                >
                     <ListItemIcon><FiberManualRecordIcon style={{color: tag.color}} /></ListItemIcon>
                     <ListItemText primary={tag.text} />
-                    <ListItemIcon>
+                    {hoverId === tag._id && <ListItemIcon>
                         <ModalButton
                             title={"Edit tag"}
                             button={<EditIcon className={classes.iconButton}/>}
                             content={<TagForm tag={tag} name={name} color={color} setName={setName} setColor={setColor} />}
                             confirmAction={() => updateTag(tag._id, name, color)}
+                            disableConfirm={!name || !colorRegex.test(color)}
                         />
                         <DeleteIcon className={classes.iconButton} onClick={() => deleteTag(tag._id)}/>
-                    </ListItemIcon>
+                    </ListItemIcon>}
                 </ListItem>
             ))}
             <ModalButton
