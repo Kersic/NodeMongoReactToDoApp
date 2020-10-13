@@ -5,9 +5,10 @@ To do Web App for School project. Created with Node.js (Express), MongoDB and Ne
 <hr/>
 
 APP: https://flamboyant-nightingale-240bca.netlify.app/list
+<br />
 run locally: npm run dev
 
-####checklist for deploying express with mongoDB atlas on Heroku:
+###### checklist for deploying express with mongoDB atlas on Heroku:
 - follow :https://medium.com/@finn.woelm/how-to-deploy-nextjs-on-netlify-with-server-side-rendering-9e8c06a06e77
 - to run app from subfolder add base = "directory_name" to netlify.toml (netlify.toml should be in root directory)
 - push changes to repository
@@ -16,9 +17,10 @@ run locally: npm run dev
 <hr/>
 
 SERVER: https://hidden-fjord-68747.herokuapp.com/
+<br />
 run locally: node index.js
 
-####checklist for deploying express with mongoDB atlas on Heroku:
+###### checklist for deploying express with mongoDB atlas on Heroku:
 - add start command in package.json
 - use process.env.MONGODB_URI for database connection (index.js)
 - use process.env.PORT for starting server (index.js)
