@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {colorRegex} from "../helpers";
 import {TagsContext} from "../contexts/tagsProvider";
 import {listIconsStyle} from "../src/theme";
+import {TasksContext} from "../contexts/tasksProvider";
+import {ListsContext} from "../contexts/listsProvider";
 
 const useStyles = makeStyles(() => ({
     ...listIconsStyle,
@@ -23,6 +25,8 @@ const Tags = () => {
     const [color, setColor] = useState("");
     const [hoverId, setHoveredId] = useState("");
     const {tags, postTag, updateTag, deleteTag } = useContext(TagsContext);
+    const { fetchTasks } = useContext(TasksContext);
+    const { fetchList } = useContext(ListsContext);
 
     return (
         <>
@@ -39,10 +43,18 @@ const Tags = () => {
                             title={"Edit tag"}
                             button={<EditIcon className={classes.iconButton}/>}
                             content={<TagForm tag={tag} name={name} color={color} setName={setName} setColor={setColor} />}
-                            confirmAction={() => updateTag(tag._id, name, color)}
+                            confirmAction={() => {
+                                updateTag(tag._id, name, color);
+                                fetchTasks();
+                                fetchList();
+                            }}
                             disableConfirm={!name || !colorRegex.test(color)}
                         />
-                        <DeleteIcon className={classes.iconButton} onClick={() => deleteTag(tag._id)}/>
+                        <DeleteIcon className={classes.iconButton} onClick={() => {
+                            deleteTag(tag._id);
+                            fetchTasks();
+                            fetchList();
+                        }}/>
                     </ListItemIcon>}
                 </ListItem>
             ))}

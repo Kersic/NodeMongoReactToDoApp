@@ -12,7 +12,7 @@ export function ListsProvider({ children }) {
         fetchList();
     }, []);
 
-    const fetchList = async () => {
+    const fetchList = () => {
         httpGet(process.env.SERVER_URL + "list", setIsLoading, data => {
             setLists(data);
         });
@@ -20,25 +20,25 @@ export function ListsProvider({ children }) {
     }
 
     const postList = (name, isDone, tagId) => {
-        httpPost(process.env.SERVER_URL + "list", {name: name, isDone: isDone, tag: tagId}, setIsLoading, data => {
+        httpPost(process.env.SERVER_URL + "list", {name: name, isDone: isDone, tag: tagId}, setIsLoading, () => {
             fetchList();
         });
     }
 
     const updateList = (id, name, isDone, tagId) => {
-        httpPut(process.env.SERVER_URL + `list/${id}`, {name: name, isDone: isDone, tag: tagId}, setIsLoading, data => {
+        httpPut(process.env.SERVER_URL + `list/${id}`, {name: name, isDone: isDone, tag: tagId}, setIsLoading, () => {
             fetchList();
         });
     }
 
     const deleteList = (id) => {
-        httpDelete(process.env.SERVER_URL + `list/${id}`, setIsLoading, data => {
+        httpDelete(process.env.SERVER_URL + `list/${id}`, setIsLoading, () => {
             fetchList();
         });
     }
 
     return (
-        <ListsContext.Provider value={{ lists, postList, updateList, deleteList }}>
+        <ListsContext.Provider value={{ lists, fetchList, postList, updateList, deleteList }}>
             <Loader isLoading={isLoading} />
             {children}
         </ListsContext.Provider>

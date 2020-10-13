@@ -4,7 +4,7 @@ import Loader from "../components/Loader";
 
 export const TagsContext = createContext([]);
 
-export function TagsProvider({ children, initialTags }) {
+export function TagsProvider({ children }) {
     const [tags, setTags] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -12,27 +12,26 @@ export function TagsProvider({ children, initialTags }) {
         fetchTags();
     }, []);
 
-    const fetchTags = async () => {
+    const fetchTags = () => {
         httpGet(process.env.SERVER_URL + "tag", setIsLoading, data => {
             setTags(data);
         });
-
     }
 
     const postTag = (name, color) => {
-        httpPost(process.env.SERVER_URL + "tag", {text: name, color: color}, setIsLoading, data => {
+        httpPost(process.env.SERVER_URL + "tag", {text: name, color: color}, setIsLoading, () => {
             fetchTags();
         });
     }
 
     const updateTag = (id, name, color) => {
-        httpPut(process.env.SERVER_URL + `tag/${id}`, {text: name, color: color}, setIsLoading, data => {
+        httpPut(process.env.SERVER_URL + `tag/${id}`, {text: name, color: color}, setIsLoading, () => {
             fetchTags();
         });
     }
 
     const deleteTag = (id) => {
-        httpDelete(process.env.SERVER_URL + `tag/${id}`, setIsLoading, data => {
+        httpDelete(process.env.SERVER_URL + `tag/${id}`, setIsLoading, () => {
             fetchTags();
         });
     }

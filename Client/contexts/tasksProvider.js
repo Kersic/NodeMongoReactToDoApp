@@ -4,7 +4,7 @@ import Loader from "../components/Loader";
 
 export const TasksContext = createContext([]);
 
-export function TasksProvider({ children, initialTasks }) {
+export function TasksProvider({ children, initialTasks, listId }) {
     const [tasks, setTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -12,32 +12,53 @@ export function TasksProvider({ children, initialTasks }) {
         setTasks(initialTasks);
     }, [initialTasks]);
 
-    // const fetchTasks = async () => {
-    //     httpGet(process.env.SERVER_URL + "task", setIsLoading, data => {
-    //         setTasks(data);
-    //     });
-    // }
-    //
-    // const postTasks = (name, color) => {
-    //     httpPost(process.env.SERVER_URL + "task", {text: name, color: color}, setIsLoading, data => {
-    //         fetchTasks();
-    //     });
-    // }
-    //
-    // const updateTasks = (id, name, color) => {
-    //     httpPut(process.env.SERVER_URL + `task/${id}`, {text: name, color: color}, setIsLoading, data => {
-    //         fetchTasks();
-    //     });
-    // }
-    //
-    // const deleteTasks = (id) => {
-    //     httpDelete(process.env.SERVER_URL + `task/${id}`, setIsLoading, data => {
-    //         fetchTasks();
-    //     });
-    // }
+    const fetchTasks = () => {
+        httpGet(process.env.SERVER_URL + `task/${listId}`, setIsLoading, data => {
+            setTasks(data);
+        });
+    }
+
+    const postTask = (text, deadline, remainder, isDone, tag) => {
+        httpPost(
+            process.env.SERVER_URL + "task",
+            {
+                text: text,
+                deadline: deadline,
+                reminderDate: remainder,
+                isDone: isDone,
+                tag: tag,
+                list: listId,
+            },
+            setIsLoading, () => {
+            fetchTasks();
+        });
+    }
+
+    const updateTask = (id, text, deadline, remainder, isDone, tag) => {
+        console.log(id);
+        httpPut(
+            process.env.SERVER_URL + `task/${id}`,
+            {
+                text: text,
+                deadline: deadline,
+                reminderDate: remainder,
+                isDone: isDone,
+                tag: tag,
+                list: listId ? listId : null,
+            },
+            setIsLoading, () => {
+            fetchTasks();
+        });
+    }
+
+    const deleteTask = (id) => {
+        httpDelete(process.env.SERVER_URL + `task/${id}`, setIsLoading, () => {
+            fetchTasks();
+        });
+    }
 
     return (
-        <TasksContext.Provider value={{ tasks, setTasks }}>
+        <TasksContext.Provider value={{ tasks, fetchTasks, postTask, updateTask, deleteTask }}>
             <Loader isLoading={isLoading} />
             {children}
         </TasksContext.Provider>
