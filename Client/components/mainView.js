@@ -18,6 +18,8 @@ import Lists from "./lists";
 import Tags from "./tags";
 import {ListsContext} from "../contexts/listsProvider";
 import {TagsContext} from "../contexts/tagsProvider";
+import {Badge} from "@material-ui/core";
+import Chip from '@material-ui/core/Chip';
 
 const drawerWidth = 240;
 
@@ -82,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function MainView({tasks, query}) {
+export default function MainView({query}) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
@@ -96,9 +98,9 @@ export default function MainView({tasks, query}) {
         setOpen(false);
     };
 
-    let title = "TO DO LIST";
+    let selectedList = null;
     const listNames = query ? lists.filter(list => list._id === query.id) : [];
-    if(listNames.length > 0) title = listNames[0].name;
+    if(listNames.length > 0) selectedList = listNames[0];
 
 
     return (
@@ -121,8 +123,9 @@ export default function MainView({tasks, query}) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        {title}
+                        {selectedList ? selectedList.name : "All"}
                     </Typography>
+                    {selectedList && selectedList.tag && <Chip  style={{marginLeft: "20px", backgroundColor: selectedList.tag.color}}  label={selectedList.tag.text} />}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -170,7 +173,7 @@ export default function MainView({tasks, query}) {
                 })}
             >
                 <div className={classes.drawerHeader} />
-               <Tasks tasks={tasks} />
+               <Tasks />
 
             </main>
         </div>

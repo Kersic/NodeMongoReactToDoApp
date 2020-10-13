@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useContext} from "react"
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import AddIcon from "@material-ui/icons/Add";
 import {makeStyles} from "@material-ui/core/styles";
-import axios from 'axios';
+import {TasksContext} from "../contexts/tasksProvider";
 
 const useStyles = makeStyles((theme) => ({
     todoList: {
@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Tasks = ({tasks}) => {
+const Tasks = () => {
     const classes = useStyles();
+    const { tasks } = useContext(TasksContext);
     return (
         <List className={classes.todoList} component="nav" aria-label="main mailbox folders">
             {tasks && tasks.map(task => (
