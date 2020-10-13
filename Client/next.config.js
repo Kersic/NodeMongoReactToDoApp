@@ -20,6 +20,7 @@ module.exports = (phase) => {
     }
 
     return {
+        target: 'serverless',
         env,
     }
 }

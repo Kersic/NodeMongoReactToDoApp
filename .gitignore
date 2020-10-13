@@ -29,4 +29,8 @@ client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
 
+#next-on-netlify
+client/out_publish/
+client/out_functions/
+
 #git rm -r --cached .
