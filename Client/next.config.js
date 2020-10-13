@@ -13,7 +13,7 @@ module.exports = (phase) => {
         SERVER_URL: (() => {
             if (isDev) return 'http://localhost:3001/'
             if (isProd) {
-                return 'http://localhost:3001/'
+                return 'https://hidden-fjord-68747.herokuapp.com/'
             }
             return 'BAD URL'
         })(),

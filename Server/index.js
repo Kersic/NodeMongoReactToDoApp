@@ -8,7 +8,6 @@ const listRoute = require('./routes/listRouter');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-const port = 3001;
 
 app.get('/', (req, res) => {
     res.json({
@@ -27,6 +26,5 @@ mongoose.connect( process.env.MONGODB_URI || 'mongodb+srv://Tadeja:feriferi09!@c
 mongoose.Promise = global.Promise;
 
 
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-})
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => { console.log(`App listening on port ${PORT}!`); });

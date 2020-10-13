@@ -4,6 +4,8 @@ node_modules/
 dist
 npm-debug.log*
 .DS_Store
+server/.gitignore
+server/.git
 
 #Client
 # dependencies

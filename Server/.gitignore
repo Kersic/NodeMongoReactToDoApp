@@ -1,0 +1,8 @@
+#Server
+.idea
+node_modules/
+dist
+npm-debug.log*
+.DS_Store
+
+#git rm -r --cached .
