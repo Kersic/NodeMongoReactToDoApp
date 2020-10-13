@@ -48,6 +48,30 @@ router.post('/', (req, res) => {
         });
 });
 
+router.post('/isDone/:id', (req, res) => {
+    console.log(req.body);
+    console.log('POST: task/isDone');
+    TaskRouter.updateOne(
+        {_id: req.params.id},
+        { $set: {
+                isDone: req.body.isDone,
+            }})
+        .then(() => {
+            TaskRouter.findOne({_id: req.params.id})
+                .then(data => {
+                    res.json(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json(err);
+                });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+});
+
 router.delete('/:id', (req, res) => {
     console.log('DELETE: task/:id/' + req.params.id);
     TaskRouter.deleteOne({_id: req.params.id})

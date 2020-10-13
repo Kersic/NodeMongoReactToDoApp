@@ -27,15 +27,25 @@ export function TasksProvider({ children, initialTasks, listId }) {
                 reminderDate: remainder,
                 isDone: isDone,
                 tag: tag,
-                list: listId,
+                list: listId ? listId : null,
             },
             setIsLoading, () => {
             fetchTasks();
         });
     }
 
+    const isTaskDone = (id, isDone) => {
+        httpPost(
+            process.env.SERVER_URL + `task/isDone/${id}`,
+            {
+                isDone: isDone,
+            },
+            setIsLoading, null, () => {
+                fetchTasks();
+            });
+    }
+
     const updateTask = (id, text, deadline, remainder, isDone, tag) => {
-        console.log(id);
         httpPut(
             process.env.SERVER_URL + `task/${id}`,
             {
@@ -58,7 +68,7 @@ export function TasksProvider({ children, initialTasks, listId }) {
     }
 
     return (
-        <TasksContext.Provider value={{ tasks, fetchTasks, postTask, updateTask, deleteTask }}>
+        <TasksContext.Provider value={{ tasks, fetchTasks, postTask, updateTask, deleteTask, isTaskDone }}>
             <Loader isLoading={isLoading} />
             {children}
         </TasksContext.Provider>

@@ -14,7 +14,7 @@ export const httpGet = (url, setIsLoading, callback) => {
     });
 }
 
-export const httpPost = (url, data, setIsLoading, callback) => {
+export const httpPost = (url, data, setIsLoading, callback, onError) => {
     setIsLoading(true);
     axios({
         method: 'post',
@@ -22,9 +22,10 @@ export const httpPost = (url, data, setIsLoading, callback) => {
         data: data
     }).then(res =>{
         setIsLoading(false);
-        callback(res.data);
+        if(callback) callback(res.data);
     }).catch(err => {
         setIsLoading(false);
+        if(onError) onError(err);
         console.log(err)
     });
 }

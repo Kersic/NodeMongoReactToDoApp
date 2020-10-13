@@ -12,16 +12,9 @@ import {TasksContext} from "../contexts/tasksProvider";
 import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {listIconsStyle} from "../src/theme";
-import {Button} from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import FormControl from "@material-ui/core/FormControl";
-import {TagsContext} from "../contexts/tagsProvider";
+import theme, {listIconsStyle} from "../src/theme";
 import {toDatePickerString} from "../helpers";
+import TaskForm from "./taskForm";
 
 const useStyles = makeStyles(() => ({
     ...listIconsStyle,
@@ -34,39 +27,12 @@ const useStyles = makeStyles(() => ({
     tagWrapper: {
         width: "120px"
     },
-    button: {
-        marginLeft: "10px"
-    },
-    listItem: {
-        display: "flex",
-        justifyContent: "space-between"
-    },
-    inputsWrapper: {
-        display: "flex",
-        alignItems: "flex-end"
-    },
-    buttonsWrapper: {
-        display: "flex",
-        justifyContent: "flex-end"
-    },
-    inputs: {
-        marginLeft:"10px",
-    },
-
-    formControl: {
-        width: "170px",
-    },
-    selectItem: {
-        display: "flex",
-        alignItems: "center"
-    }
 }));
 
 const Tasks = () => {
     const classes = useStyles();
 
-    const { tasks, postTask, updateTask, deleteTask } = useContext(TasksContext);
-    const { tags } = useContext(TagsContext);
+    const { tasks, postTask, updateTask, deleteTask, isTaskDone } = useContext(TasksContext);
     const [editingId, setEditingId] = useState(null);
     const [text, setText] = useState(null);
     const [tagId, setTagId] = useState("empty");
@@ -79,7 +45,7 @@ const Tasks = () => {
         setText(task.text);
         setTagId(task && task.tag ? task.tag._id : "empty");
         setDeadline(toDatePickerString(new Date(task.deadline)));
-        setReminder(toDatePickerString(new Date (task.reminderDate)));
+        setReminder(toDatePickerString(new Date(task.reminderDate)));
         setIsDone(task.isDone);
         e.stopPropagation();
     }
@@ -89,7 +55,7 @@ const Tasks = () => {
         setText("");
         setTagId("empty");
         setDeadline(toDatePickerString(new Date()));
-        setReminder(toDatePickerString(new Date ()));
+        setReminder(toDatePickerString(new Date()));
         setIsDone(false);
     }
 
@@ -99,9 +65,22 @@ const Tasks = () => {
     }
 
     const confirmEditing = (e) => {
-        updateTask(editingId, text, deadline, remainder, isDone, tagId === "empty" ? null : tagId)
-        e.stopPropagation();
+        updateTask(editingId, text, deadline, remainder, isDone, tagId === "empty" ? null : tagId);
         setEditingId(null);
+        e.stopPropagation();
+    }
+
+    const confirmAdding = (e) => {
+        postTask(text, deadline, remainder, isDone, tagId === "empty" ? null : tagId);
+        setEditingId(null);
+        e.stopPropagation();
+    }
+
+    const toggleDone = (task) => {
+        const tasksCopy = tasks;
+        const index = tasks.findIndex(t => t._id === task._id);
+        tasksCopy[index].isDone = !tasksCopy[index].isDone;
+        isTaskDone(task._id, task.isDone);
     }
 
     const cancelEditing = (e) => {
@@ -112,81 +91,33 @@ const Tasks = () => {
     return (
         <List className={classes.todoList} component="nav" aria-label="main mailbox folders">
             {tasks && tasks.map(task => {
+                const showReminder = new Date(task.reminderDate) < new Date();
                 if (task._id === editingId)
                     return (
-                        <ListItem className={classes.listItem} key={task._id} button onClick={() => console.log("toggleDone")}>
-                            <div className={classes.inputsWrapper}>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel>Tag</InputLabel>
-                                    <Select
-                                        value={tagId}
-                                        color="secondary"
-                                        onChange={e => setTagId(e.target.value)}
-                                    >
-                                        <MenuItem value={"empty"}>
-                                            <div className={classes.selectItem}>
-                                                <div>Undefined</div>
-                                            </div>
-                                        </MenuItem>
-                                        {tags.map(tag => (
-                                            <MenuItem key={tag._id} value={tag._id}>
-                                                <div className={classes.selectItem}>
-                                                    <FiberManualRecordIcon style={{color: tag.color}} />
-                                                    <div>{tag.text}</div>
-                                                </div>
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                                <TextField color="secondary"
-                                           value={text}
-                                           label="Task"
-                                           onChange={e => setText(e.target.value)}
-                                           className={classes.inputs}
-                                />
-                                <TextField
-                                    color="secondary"
-                                    label="Deadline"
-                                    type="date"
-                                    value={deadline}
-                                    onChange={(e) => setDeadline(e.target.value)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    className={classes.inputs}
-                                />
-                                <TextField
-                                    color="secondary"
-                                    label="Remainder"
-                                    type="date"
-                                    value={remainder}
-                                    onChange={(e) => setReminder(e.target.value)}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    className={classes.inputs}
-                                />
-                            </div>
-                            <div className={classes.buttonsWrapper}>
-                                <Button variant="contained" color="default" className={classes.button} onClick={e=>confirmEditing(e)}>
-                                    Confirm
-                                </Button>
-                                <Button variant="contained" color="primary" className={classes.button} onClick={e=>cancelEditing(e)}>
-                                    Cancel
-                                </Button>
-                            </div>
-                        </ListItem>
+                        <TaskForm
+                            key={task._id}
+                            tagId={tagId}
+                            setTagId={setTagId}
+                            text={text}
+                            setText={setText}
+                            deadline={deadline}
+                            setDeadline={setDeadline}
+                            remainder={remainder}
+                            setReminder={setReminder}
+                            confirmEditing={confirmEditing}
+                            cancelEditing={cancelEditing}
+                        />
                     )
                 else
                     return (
-                        <ListItem key={task._id} button onClick={() => console.log("toggleDone")}>
+                        <ListItem key={task._id} button onClick={() => toggleDone(task)}>
                             <ListItemIcon>
                                 {task.isDone ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                             </ListItemIcon>
                             <div className={classes.tagWrapper}>
                                 {task.tag && <Chip style={{maxWidth: "80%", backgroundColor: task.tag.color}} label={task.tag.text}/>}
                             </div>
-                            <div className={classes.dateWrapper}>{new Date(task.deadline).toDateString()}</div>
+                            <div style={{color: showReminder ? theme.palette.primary.main : ""}} className={classes.dateWrapper}>{new Date(task.deadline).toDateString()}</div>
                             <ListItemText style={{textDecoration: task.isDone ? "line-through" : ""}}
                                           primary={task.text}/>
                             <EditIcon className={classes.iconButton} onClick={e => editTask(e, task)}/>
@@ -197,7 +128,18 @@ const Tasks = () => {
             )}
             <Divider />
             {editingId === "new" &&
-                <p>add new</p>
+            <TaskForm
+                tagId={tagId}
+                setTagId={setTagId}
+                text={text}
+                setText={setText}
+                deadline={deadline}
+                setDeadline={setDeadline}
+                remainder={remainder}
+                setReminder={setReminder}
+                confirmEditing={confirmAdding}
+                cancelEditing={cancelEditing}
+            />
             }
             {editingId !== "new" &&
                 <ListItem button onClick={addNewTask}>
