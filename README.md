@@ -1,4 +1,4 @@
-# Node.js MongoDB React ToDo App
+# ToDo App with Next.js Node.js and MongoDB
 
 To do Web App for School project. Created with Node.js (Express), MongoDB and Next.js.
 
