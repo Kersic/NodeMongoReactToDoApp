@@ -98,7 +98,7 @@ const TaskForm = ({tagId, setTagId, text, setText, deadline, setDeadline, remain
                 />
             </div>
             <div className={classes.buttonsWrapper}>
-                <Button variant="contained" color="default" className={classes.button} onClick={e=>confirmEditing(e)}>
+                <Button variant="contained" color="default" className={classes.button} disabled={!text} onClick={e=>confirmEditing(e)}>
                     Confirm
                 </Button>
                 <Button variant="contained" color="primary" className={classes.button} onClick={e=>cancelEditing(e)}>
