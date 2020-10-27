@@ -24,15 +24,17 @@ export function TagsProvider({ children }) {
         });
     }
 
-    const updateTag = (id, name, color) => {
+    const updateTag = (id, name, color, callback) => {
         httpPut(process.env.SERVER_URL + `tag/${id}`, {text: name, color: color}, setIsLoading, () => {
             fetchTags();
+            callback();
         });
     }
 
-    const deleteTag = (id) => {
+    const deleteTag = (id, callback) => {
         httpDelete(process.env.SERVER_URL + `tag/${id}`, setIsLoading, () => {
             fetchTags();
+            callback();
         });
     }
 

@@ -44,16 +44,18 @@ const Tags = () => {
                             button={<EditIcon className={classes.iconButton}/>}
                             content={<TagForm tag={tag} name={name} color={color} setName={setName} setColor={setColor} />}
                             confirmAction={() => {
-                                updateTag(tag._id, name, color);
-                                fetchTasks();
-                                fetchList();
+                                updateTag(tag._id, name, color, () => {
+                                    fetchTasks();
+                                    fetchList();
+                                });
                             }}
                             disableConfirm={!name || !colorRegex.test(color)}
                         />
                         <DeleteIcon className={classes.iconButton} onClick={() => {
-                            deleteTag(tag._id);
-                            fetchTasks();
-                            fetchList();
+                            deleteTag(tag._id, () => {
+                                fetchTasks();
+                                fetchList();
+                            });
                         }}/>
                     </ListItemIcon>}
                 </ListItem>
