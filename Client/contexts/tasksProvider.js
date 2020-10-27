@@ -13,9 +13,15 @@ export function TasksProvider({ children, initialTasks, listId }) {
     }, [initialTasks]);
 
     const fetchTasks = () => {
-        httpGet(process.env.SERVER_URL + `task/${listId}`, setIsLoading, data => {
-            setTasks(data);
-        });
+        if(listId !== null && listId !== undefined && listId !== "") {
+            httpGet(process.env.SERVER_URL +`task/${listId}`, setIsLoading, data => {
+                setTasks(data);
+            });
+        } else {
+            httpGet(process.env.SERVER_URL +`task/`, setIsLoading, data => {
+                setTasks(data);
+            });
+        }
     }
 
     const postTask = (text, deadline, remainder, isDone, tag) => {
