@@ -4,7 +4,6 @@ To do Web App for School project. Created with Node.js (Express), MongoDB and Ne
 
 <hr/>
 
-APP: https://flamboyant-nightingale-240bca.netlify.app/list
 <br />
 run locally: npm run dev
 
@@ -16,7 +15,6 @@ run locally: npm run dev
 
 <hr/>
 
-SERVER: https://hidden-fjord-68747.herokuapp.com/
 <br />
 run locally: node index.js
 
