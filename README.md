@@ -26,3 +26,8 @@ run locally: node index.js
 - add MONGODB_URI to Config Vars in heroku app settings (not PORT)
 - deploy to heroku: https://devcenter.heroku.com/articles/deploying-nodejs
 - debug with "heroku logs --tail"
+
+<hr/>
+
+
+<img src="https://github.com/Kersic/NodeMongoReactToDoApp/blob/main/Screenshot.png" width="800">
