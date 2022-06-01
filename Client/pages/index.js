@@ -15,6 +15,7 @@ Index.getInitialProps = (ctx) => {
         ctx.res.writeHead(302, { Location: "/list" });
         ctx.res.end();
     }
+    return { props : null };
 };
 
 export default Index;
